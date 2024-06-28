@@ -1,3 +1,19 @@
+Along with this set a date to expiry the video using the exact date we loaclly saved in db 
+
+If the date and time we stored in db is matched correctly then only show a message of your video was expired text while the users go for play the video 
+
+
+
+
+
+In this calulate the total timing of video while fully watched
+If the total timing of video is reached multiples of 2 
+It's means the user watched the video 2times only fully video watched
+Then go for 3rd time block the user with warning message u have reached the watch limit message
+
+When Totaal video is fully played then one count is completed
+
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
