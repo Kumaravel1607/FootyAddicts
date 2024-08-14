@@ -1,3 +1,10 @@
+audio_service: ^0.18.0
+  just_audio: ^0.9.18
+  provider: ^6.0.4
+  streaming_shared_preferences: ^2.1.1
+
+
+
 class Channel {
   final String name;
   final String url;
