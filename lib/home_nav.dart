@@ -1,3 +1,397 @@
+class Channel {
+  final String name;
+  final String url;
+  final String language;
+  final String imageUrl;
+
+  Channel({
+    required this.name,
+    required this.url,
+    required this.language,
+    required this.imageUrl,
+  });
+}
+
+
+final List<Channel> tamilChannels = [
+  Channel(
+    name: 'Tamil FM 1',
+    url: 'https://example.com/tamil1',
+    language: 'Tamil',
+    imageUrl: 'https://example.com/tamil1.jpg',
+  ),
+  Channel(
+    name: 'Tamil FM 2',
+    url: 'https://example.com/tamil2',
+    language: 'Tamil',
+    imageUrl: 'https://example.com/tamil2.jpg',
+  ),
+  // Add more Tamil channels here
+];
+
+final List<Channel> kannadaChannels = [
+  Channel(
+    name: 'Kannada FM 1',
+    url: 'https://example.com/kannada1',
+    language: 'Kannada',
+    imageUrl: 'https://example.com/kannada1.jpg',
+  ),
+  Channel(
+    name: 'Kannada FM 2',
+    url: 'https://example.com/kannada2',
+    language: 'Kannada',
+    imageUrl: 'https://example.com/kannada2.jpg',
+  ),
+  // Add more Kannada channels here
+];
+
+final List<Channel> malayalamChannels = [
+  Channel(
+    name: 'Malayalam FM 1',
+    url: 'https://example.com/malayalam1',
+    language: 'Malayalam',
+    imageUrl: 'https://example.com/malayalam1.jpg',
+  ),
+  Channel(
+    name: 'Malayalam FM 2',
+    url: 'https://example.com/malayalam2',
+    language: 'Malayalam',
+    imageUrl: 'https://example.com/malayalam2.jpg',
+  ),
+  // Add more Malayalam channels here
+];
+
+final List<Channel> hindiChannels = [
+  Channel(
+    name: 'Hindi FM 1',
+    url: 'https://example.com/hindi1',
+    language: 'Hindi',
+    imageUrl: 'https://example.com/hindi1.jpg',
+  ),
+  Channel(
+    name: 'Hindi FM 2',
+    url: 'https://example.com/hindi2',
+    language: 'Hindi',
+    imageUrl: 'https://example.com/hindi2.jpg',
+  ),
+  // Add more Hindi channels here
+];
+
+
+
+class MyAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
+  final _player = AudioPlayer();
+  late List<Channel> currentChannelList;
+  int _currentChannelIndex = 0;
+
+  MyAudioHandler() {
+    _initializePlayer();
+  }
+
+  void _initializePlayer() {
+    _player.playbackEventStream.listen((event) {
+      playbackState.add(playbackState.value.copyWith(
+        controls: [
+          MediaControl.skipToPrevious,
+          _player.playing ? MediaControl.pause : MediaControl.play,
+          MediaControl.skipToNext,
+          MediaControl.stop,
+        ],
+        playing: _player.playing,
+        processingState: {
+          ProcessingState.idle: AudioProcessingState.idle,
+          ProcessingState.loading: AudioProcessingState.loading,
+          ProcessingState.buffering: AudioProcessingState.buffering,
+          ProcessingState.ready: AudioProcessingState.ready,
+          ProcessingState.completed: AudioProcessingState.completed,
+        }[_player.processingState]!,
+      ));
+    });
+
+    _player.icyMetadataStream.listen((IcyMetadata? metadata) {
+      if (metadata != null) {
+        final info = metadata.info;
+        final artwork = metadata.headers?.imageUrl;
+        mediaItem.add(MediaItem(
+          id: currentChannelList[_currentChannelIndex].url,
+          album: info?.album ?? 'Unknown Album',
+          title: info?.title ?? 'Unknown Title',
+          artist: info?.artist ?? 'Unknown Artist',
+          artUri: artwork != null ? Uri.parse(artwork) : null,
+        ));
+      }
+    });
+  }
+
+  void loadChannelList(List<Channel> channels, int index) {
+    currentChannelList = channels;
+    _currentChannelIndex = index;
+    _loadChannel(_currentChannelIndex);
+  }
+
+  void _loadChannel(int index) async {
+    try {
+      await _player.setUrl(currentChannelList[index].url);
+      play();
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  @override
+  Future<void> play() => _player.play();
+
+  @override
+  Future<void> pause() => _player.pause();
+
+  @override
+  Future<void> stop() => _player.stop();
+
+  @override
+  Future<void> skipToNext() {
+    if (_currentChannelIndex < currentChannelList.length - 1) {
+      _currentChannelIndex++;
+      _loadChannel(_currentChannelIndex);
+    }
+  }
+
+  @override
+  Future<void> skipToPrevious() {
+    if (_currentChannelIndex > 0) {
+      _currentChannelIndex--;
+      _loadChannel(_currentChannelIndex);
+    }
+  }
+}
+
+
+
+
+class HomePage extends StatelessWidget {
+  final AudioHandler audioHandler;
+
+  HomePage({required this.audioHandler});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('FM Player'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildLanguageSection(context, 'Tamil Channels', tamilChannels),
+            _buildLanguageSection(context, 'Kannada Channels', kannadaChannels),
+            _buildLanguageSection(context, 'Malayalam Channels', malayalamChannels),
+            _buildLanguageSection(context, 'Hindi Channels', hindiChannels),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageSection(BuildContext context, String title, List<Channel> channels) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: channels.length,
+              itemBuilder: (context, index) {
+                final channel = channels[index];
+                return GestureDetector(
+                  onTap: () {
+                    audioHandler.loadChannelList(channels, index);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlayerScreen(
+                          audioHandler: audioHandler,
+                          channelList: channels,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    margin: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Image.network(
+                          channel.imageUrl,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(height: 8),
+                        Text(channel.name),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+class PlayerScreen extends StatelessWidget {
+  final AudioHandler audioHandler;
+  final List<Channel> channelList;
+
+  PlayerScreen({required this.audioHandler, required this.channelList});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Now Playing'),
+      ),
+      body: Center(
+        child: StreamBuilder<MediaItem?>(
+          stream: audioHandler.mediaItem,
+          builder: (context, snapshot) {
+            final mediaItem = snapshot.data;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (mediaItem?.artUri != null)
+                  Image.network(
+                    mediaItem!.artUri.toString(),
+                    width: 200,
+                    height: 200,
+                  ),
+                SizedBox(height: 20),
+                Text(
+                  mediaItem?.title ?? 'No Title',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  mediaItem?.artist ?? 'No Artist',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  mediaItem?.album ?? 'No Album',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+      bottomNavigationBar: StreamBuilder<bool>(
+        stream: audioHandler.playbackState.map((state) => state.playing),
+        builder: (context, snapshot) {
+          final isPlaying = snapshot.data ?? false;
+          return BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.skip_previous),
+                label: 'Previous',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+                label: 'Play/Pause',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.skip_next),
+                label: 'Next',
+              ),
+            ],
+                   onTap: (index) {
+              switch (index) {
+                case 0:
+                  audioHandler.skipToPrevious();
+                  break;
+                case 1:
+                  isPlaying ? audioHandler.pause() : audioHandler.play();
+                  break;
+                case 2:
+                  audioHandler.skipToNext();
+                  break;
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+
+
+
+import 'package:flutter/material.dart';
+import 'package:audio_service/audio_service.dart';
+import 'package:just_audio/just_audio.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final audioHandler = await AudioService.init(
+    builder: () => MyAudioHandler(),
+    config: AudioServiceConfig(
+      androidNotificationChannelId: 'com.example.fmplayer.channel.audio',
+      androidNotificationChannelName: 'FM Player',
+      androidNotificationOngoing: true,
+    ),
+  );
+
+  runApp(MyApp(audioHandler: audioHandler));
+}
+
+class MyApp extends StatelessWidget {
+  final AudioHandler audioHandler;
+
+  MyApp({required this.audioHandler});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'FM Player',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(audioHandler: audioHandler),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 dependencies:
   flutter:
     sdk: flutter
