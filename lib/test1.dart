@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+buimport 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:footyaddicts/constant/color.dart';
 
@@ -447,3 +447,94 @@ class _Notifications1ScreenState extends State<Notifications1Screen> {
 //         ));
 //   }
 // }
+
+
+
+
+
+**KUMARAVEL SHANMUGAM**
+Flutter Developer | Team Lead  
+Dharmapuri, Tamil Nadu  
+Email: kumaraveljoshika29@gmail.com  
+Phone: +91 99768 50646 | +91 96773 15169  
+GitHub: github.com/Kumaravel1607  
+LinkedIn: linkedin.com/in/kums-kumaravel-338154179  
+
+---
+
+**Professional Summary**
+
+Experienced Flutter Developer with over 3 years in mobile app development, currently serving as a Team Lead at Witvo Technologies. Skilled in building cross-platform applications with strong UI/UX, efficient backend integration, and clean architecture. Proven record of publishing live apps on the Play Store and managing development teams. Passionate about performance optimization, scalable coding practices, and modern mobile frameworks.
+
+---
+
+**Professional Experience**
+
+**Team Lead – Flutter Developer**  
+Witvo Technologies Pvt. Ltd. – Bangalore  
+March 2024 – Present  
+- Leading a team of Flutter developers and overseeing full-cycle app development.  
+- Project planning, code reviews, architecture decisions, and mentoring junior developers.  
+- Live Projects:
+  - [Jewel App](https://play.google.com/store/apps/details?id=com.witvotech.JewelApp)
+  - [Chandra Jewellers](https://play.google.com/store/apps/details?id=com.witvotech.chandrajewellers)
+  - [SS Jewellers](https://play.google.com/store/apps/details?id=com.witvotech.ssjewellery)
+  - [Witvo Expense Manager Offline](https://play.google.com/store/apps/details?id=com.witvotech.expensemanager)
+  - [WO FM](https://play.google.com/store/apps/details?id=com.witvotech.wofm)
+  - [SRA Reward Manager](https://play.google.com/store/apps/details?id=com.witvotech.srarewards)
+  - [TTS](https://play.google.com/store/apps/details?id=com.witvotech.wotts)
+  - [Reminder](https://play.google.com/store/apps/details?id=com.witvotech.wo_reminder)
+  - [WO Games](https://play.google.com/store/apps/details?id=com.witvotech.wokidsgamezone)
+  - Asrithas Group (Play Store)
+  - GooAds (Play Store)
+
+**Flutter Developer**  
+Hashref Software Technology Pvt. Ltd. – Coimbatore  
+January 2022 – March 2024  
+- Developed full-featured mobile applications across EdTech, Real Estate, and Classifieds.  
+- Collaborated with designers, QA, and backend teams to deliver high-quality products.  
+- Major Projects:
+  - Expense Manager (Offline) – Local storage using SQLite and Hive.  
+  - Digital Gold Saving App – Investment app with live gold pricing and secure transactions.  
+  - Reward Points Management App – Digital wallet and rewards system.  
+  - MtiDesk – Real-time student attendance tracking.  
+  - MtiSoft – Attendance app with backend sync.  
+  - Asrithas Group – Real estate app.  
+  - GooAds – Multi-city classifieds.  
+  - Glocal Bizz – Product ads for B2C and C2C.  
+
+---
+
+**Key Skills**
+
+- **Languages & Frameworks:** Dart, Flutter, HTML, CSS  
+- **Mobile Development:** Android & iOS (cross-platform)  
+- **Storage:** SQLite, Hive, Firebase  
+- **Backend Integration:** REST APIs, Firebase  
+- **API Development:** Basic PHP API  
+- **Tools:** Git, GitHub, Android Studio  
+- **Soft Skills:** Leadership, Communication, Problem Solving  
+- **Focus Areas:** Clean Architecture, Offline/Online Storage, Team Collaboration
+
+---
+
+**Education**
+
+**Bachelor of Engineering – Computer Science and Engineering**  
+KPR Institute of Engineering and Technology, Coimbatore  
+2016 – 2020 | CGPA: 6.8  
+
+**HSC (Higher Secondary Certificate)**  
+Paramveer Matriculation Hr. Sec. School, Dharmapuri  
+2016 | 78.25%  
+
+**SSLC (Secondary School Leaving Certificate)**  
+Paramveer Matriculation Hr. Sec. School, Dharmapuri  
+2014 | 93.6%
+
+---
+
+**Certifications**
+
+- HTML & CSS – SoloLearn  
+- Step into Robotic Process Automation (RPA) – GUVI (Oracle Certified)
